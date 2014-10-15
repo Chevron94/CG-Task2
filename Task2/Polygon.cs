@@ -10,7 +10,13 @@ namespace Task2
     {
 
         Vector fv0, fv1, fv2;
-        public Color color;
+        Color color;
+
+        public Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
 
         public Polygon(Vector av0, Vector av1, Vector av2, Color aColor)
         {

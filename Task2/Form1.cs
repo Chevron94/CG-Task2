@@ -91,8 +91,7 @@ namespace Task2
             if (Check_Data())
             {
                 Figure = new Viewport(Canvas.Height, Canvas.Width, new Camera(CamPos, CamDir.substract(CamPos), Convert.ToDouble(Camera_Angle.Value)), new LightPoint(LightDir), height, width, length, pyram1_height, pyram2_height, Color);
-                Figure.Render();
-                Canvas.Image = Figure.pic;
+                Canvas.Image = Figure.Render();
             }
             else MessageBox.Show("Неверные данные");
         }

@@ -9,25 +9,40 @@ namespace Task2
     class Vector
     {
 
-        public double X, Y, Z;
-        public double W;
+        double x, y, z;
+        double w;
         public Vector Vcam;
 
-        public Vector(double aX, double aY, double aZ, double aW)
+        public double X
         {
-            X = aX;
-            Y = aY;
-            Z = aZ;
-            W = aW;
-            Vcam = null;
+            get { return x; }
+            set { x = value; }
         }
 
-        public Vector(double aX, double aY, double aZ)
+        public double Y
         {
-            X = aX;
-            Y = aY;
-            Z = aZ;
-            W = 1;
+            get { return y; }
+            set { y = value; }
+        }
+
+        public double Z
+        {
+            get { return z; }
+            set { z = value; }
+        }
+
+        public double W
+        {
+            get { return w; }
+            set { w = value; }
+        }
+
+        public Vector(double _X, double _Y, double _Z, double _W=1)
+        {
+            X = _X;
+            Y = _Y;
+            Z = _Z;
+            W = _W;
             Vcam = null;
         }
 
@@ -132,7 +147,7 @@ namespace Task2
         /// <param name="cam"></param>
         public void rotateForCam(Camera cam)
         {
-            Vcam = applyMatrix(cam.toRotate);
+            Vcam = applyMatrix(cam.Rotation);
         }
 
         public Vector substract(Vector v2)

@@ -9,14 +9,14 @@ namespace Task2
 {
     class Viewport
     {
-        public Color brush;
-        public Bitmap pic;
-        public int height, width;
-        public Camera cam;
+        Color brush;
+        Bitmap pic;
+        int height, width;
+        Camera cam;
         double del; //понадобится для того, чтобы пересчитывать трехмерные координаты в двумерные на экране
-        public List<Vector> verts;
-        public List<Polygon> polys;
-        public LightPoint lightPoint;
+        List<Vector> verts;
+        List<Polygon> polys;
+        LightPoint lightPoint;
         double[,] dep;
 
         public Viewport(int _height, int _width, Camera _camera, LightPoint _light, double par_length, double par_width, double par_height, double pyram1_h, double pyram2_h, Color Color)
@@ -44,7 +44,7 @@ namespace Task2
             verts.Add(new Vector(0, ay, 0));
             verts.Add(new Vector(ax, ay, 0));
             verts.Add(new Vector(ax, 0, 0));
-            verts.Add(new Vector(-h1, ay/2, az/2));
+            verts.Add(new Vector(0-h1, ay/2, az/2));
             verts.Add(new Vector(ax+h2, ay/2, az/2));
 
             polys.Add(new Polygon(verts[8 + first], verts[0 + first], verts[1 + first], brush));
@@ -60,7 +60,7 @@ namespace Task2
 
             polys.Add(new Polygon(verts[5 + first], verts[4 + first], verts[0 + first], brush));
             polys.Add(new Polygon(verts[0 + first], verts[1 + first], verts[5 + first], brush));
-
+            
             polys.Add(new Polygon(verts[0 + first], verts[4 + first], verts[7 + first], brush));
             polys.Add(new Polygon(verts[7 + first], verts[3 + first], verts[0 + first], brush));
 
@@ -72,7 +72,7 @@ namespace Task2
 
             polys.Add(new Polygon(verts[2 + first], verts[3 + first], verts[7 + first], brush));
             polys.Add(new Polygon(verts[2 + first], verts[7 + first], verts[6 + first], brush));
-
+            
             polys.Add(new Polygon(verts[1 + first], verts[2 + first], verts[5 + first], brush));
             polys.Add(new Polygon(verts[2 + first], verts[6 + first], verts[5 + first], brush));
         }
@@ -128,11 +128,8 @@ namespace Task2
         /// <returns></returns>
         public Vector findVector(Point pnt, Polygon poly)
         {
-            Vector onScreen = new Vector(0, 0, 1);
-            double zn = (pnt.X - (double)width / 2) / (del * (double)width / 2);
-            onScreen.X = zn;
-            zn = (pnt.Y - (double)height / 2) / (del * (double)width / 2);
-            onScreen.Y = zn;
+            //Vector onScreen = new Vector(0, 0, 1);
+            Vector onScreen = new Vector((pnt.X - (double)width / 2) / (del * (double)width / 2), (pnt.Y - (double)height / 2) / (del * (double)width / 2), 1);
 
             Vector norm = poly.normalCam;
             double A, B, C, D;
@@ -155,15 +152,15 @@ namespace Task2
             curR = curG = curB = 0;
 
             Vector norm = poly.normalCam;
-            Vector ray = lightPoint.pos.Vcam.substract(curV); //от точки до источника освещения
+            Vector ray = lightPoint.Direction.Vcam.substract(curV); //от точки до источника освещения
             if (ray.findAngle(norm) < Math.PI / 2)
             {
                 double cos = Math.Cos(ray.findAngle(norm));
                 double intens = lightPoint.calcIntensity(curV);
                 cos = Math.Pow(cos, 0.5);
-                curR += cos * intens * lightPoint.intR * poly.color.R;
-                curG += cos * intens * lightPoint.intG * poly.color.G;
-                curB += cos * intens * lightPoint.intB * poly.color.B;
+                curR += cos * intens * lightPoint.intR * poly.Color.R;
+                curG += cos * intens * lightPoint.intG * poly.Color.G;
+                curB += cos * intens * lightPoint.intB * poly.Color.B;
             }
             R += curR;
             G += curG;
@@ -213,14 +210,14 @@ namespace Task2
                 }
         }
 
-        public void Render()
+        public Bitmap Render()
         {
             if (cam != null)
             {
                 //просчитываем относительные координаты для камеры
                 foreach (Vector vr in verts)
                     vr.rotateForCam(cam);
-                lightPoint.pos.rotateForCam(cam);
+                lightPoint.Direction.rotateForCam(cam);
                 Graphics gr = Graphics.FromImage(pic);
                 gr.Clear(Color.White);
                 dep = new double[width, height];
@@ -234,6 +231,7 @@ namespace Task2
                             DrawPolygon(pl);
 
             }
+            return pic;
         }
     }
 }

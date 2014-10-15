@@ -10,8 +10,11 @@ namespace Task2
         Vector fpos; //позиция камеры
         Vector fdirection;  //направление камеры
         double fangle; //угол обзора камеры в радианах
-        public Matrix toRotate;
-
+        Matrix toRotate;
+        public Matrix Rotation
+        {
+            get { return toRotate; }
+        }
         public Camera(Vector apos, Vector adirection, double aangle)
         {
             fpos = apos;

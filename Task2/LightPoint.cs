@@ -8,9 +8,15 @@ namespace Task2
     class LightPoint
     {
 
-        public Vector pos;
+        Vector pos;
         public double intR, intG, intB;
         public double k1, k2, k3;
+
+        public Vector Direction
+        {
+            get { return pos; }
+            set { pos = value; }
+        }
 
         public LightPoint(Vector apos, double aintR=1, double aintG=1, double aintB=1, double ak1=1, double ak2=0, double ak3=0)
         {
